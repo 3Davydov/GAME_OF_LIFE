@@ -11,6 +11,7 @@
 #include <cmath>
 #include <shellapi.h>
 #include <atlstr.h>
+#include <clocale>
 
 #endif
 

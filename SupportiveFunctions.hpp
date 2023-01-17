@@ -26,9 +26,9 @@ namespace Supportive{
 
     std::string to_str(int num);
 
-    std::string set_output(Classes::GamePlayWindow* ptr_hWnd_3);
+    //std::string set_output(Classes::GamePlayWindow* ptr_hWnd_3);
 
-    void dump_file(std::ofstream& out, Classes::GamePlayWindow* ptr_hWnd_3);
+    //void dump_file(std::ofstream& out, Classes::GamePlayWindow* ptr_hWnd_3);
 
     void print_help_info(RECT st, HDC hdc);
 

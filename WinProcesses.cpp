@@ -85,7 +85,8 @@ namespace Processes{
             case WM_CREATE:
                 {
                 Field.init_window(_T("GamePlayFrame"), WndProc_3);
-                Field.create_win_class(hInst, Field.window_name, Field.window_proc, Field.window_class);
+                //Field.create_win_class(hInst, Field.window_name, Field.window_proc, Field.window_class);
+                Field.create_win_class(hInst);
                 Supportive::get_window_description(&ptr_SuppMenu, lParam, hInst, hWnd_2);
                 
                 ptr_SuppMenu->CreateAllButtons(hInst, lParam, &DownloadButton, &ReadyButton, &ReturnButton, &OfflineButton);
@@ -143,21 +144,25 @@ namespace Processes{
                 if (file_reader->get_buff_size() != empty_buff){
                     descr = child.create_window(_T("ChildFrame"), _T("Child"), WS_CHILD | WS_BORDER, NULL, NULL, 1300, 720, hWnd_3, hInst, ptr_child);
                     child.set_window_descriptor(descr);
+                    descr = NULL;
+                    descr = child.get_window_despriptor();
                 }
                 else{
                     HWND hc;
                     hc = FindWindow(PName,  _T("PLAY"));
                     ShowWindow(hc, SW_SHOW);
-                    (ptr_Field)->destroy_window((ptr_Field)->window_d);
+                    (ptr_Field)->destroy_window((ptr_Field)->get_window_despriptor());
                 }
                 break;
                 }
             case WM_SIZE:
                 {
-                ptr_Field->size_x = LOWORD(lParam); 
-                ptr_Field->size_y = HIWORD(lParam); 
+                //ptr_Field->get_size_x() = LOWORD(lParam); 
+                //ptr_Field->get_size_y() = HIWORD(lParam); 
+                ptr_Field->set_size_x(LOWORD(lParam));
+                ptr_Field->set_size_y(HIWORD(lParam));
                 ptr_Field->SetButtonsPosition(&DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
-                ptr_Field->game_field = &child;
+                ptr_Field->set_game_field_pointer(&child);
 
                 int res = 0;
                 res = child.read_matrix(file_reader->get_current_index(), file_reader->get_buffer(), file_reader->get_buff_size(), file_reader->get_size_x(), file_reader->get_size_y(), file_reader->get_birth(), file_reader->get_survive());
@@ -191,8 +196,8 @@ namespace Processes{
             case WM_DESTROY:
                 {
                 
-                file_reader->delete_data(ptr_Field->cmd_input_file);
-                ptr_Field->file_name = nullptr;
+                file_reader->delete_data(ptr_Field->get_cmd_input_file());
+                ptr_Field->set_file_name(nullptr);
                 break;
                 }
             default: break;

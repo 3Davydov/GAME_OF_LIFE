@@ -14,8 +14,9 @@ int APIENTRY _tWinMain (HINSTANCE This, HINSTANCE Prev,  LPTSTR cmd,   int mode)
     int argc;
     argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     Classes::MainWindow hWnd;
-    hWnd.set_window_name(_T("MainFrame"));
-    hWnd.set_window_proc(Processes::WndProc);
+    //hWnd.set_window_name(_T("MainFrame"));
+    //hWnd.set_window_proc(Processes::WndProc);
+    hWnd.init_window(_T("MainFrame"), Processes::WndProc);
     hWnd.create_win_class(This);
     
     std::string a;
@@ -38,8 +39,8 @@ int APIENTRY _tWinMain (HINSTANCE This, HINSTANCE Prev,  LPTSTR cmd,   int mode)
     
     MSG msg;
     while(GetMessage(&msg, NULL, NULL, NULL)) { 
-        TranslateMessage(&msg);// Функция трансляции кодов нажатой клавиши 
-        DispatchMessage(&msg); // Посылает сообщение функции 
+        TranslateMessage(&msg);//      
+        DispatchMessage(&msg); //    
     } 
     return 0; 
 }
