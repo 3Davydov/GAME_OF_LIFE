@@ -3,6 +3,7 @@
 #include "WinClasses.hpp"
 #include "SupportiveFunctions.hpp"
 #include "SuppClasses.hpp"
+#include "SwitchClasses.hpp"
 
 using namespace Classes;
 
@@ -67,7 +68,10 @@ namespace Processes{
                 int h = HIWORD(wParam);
                 int tub_pressed = wParam;
                 if (tub_pressed == TubPressed) l = menu_exit;
-                Supportive::switch_lparam_MainMenu(l, &ptr_MainMenu, hWnd, &SuppMenu, &ptr_SuppMenu, hInst);
+                //Supportive::switch_lparam_MainMenu(l, &ptr_MainMenu, hWnd, &SuppMenu, &ptr_SuppMenu, hInst);
+                smart_switch::Factory_MainMenu factory = smart_switch::get_possible_options_for_main_menu();
+                smart_switch::SwitchMainMenu* option = factory.create_option(l);
+                option->execute_action(&ptr_MainMenu, hWnd, &SuppMenu, &ptr_SuppMenu, hInst);
                 break; }
             case WM_CHAR: if ((TCHAR) wParam == VK_ESCAPE) SendMessage(hWnd, WM_COMMAND, TubPressed, NULL);
             default: break;
@@ -85,7 +89,6 @@ namespace Processes{
             case WM_CREATE:
                 {
                 Field.init_window(_T("GamePlayFrame"), WndProc_3);
-                //Field.create_win_class(hInst, Field.window_name, Field.window_proc, Field.window_class);
                 Field.create_win_class(hInst);
                 Supportive::get_window_description(&ptr_SuppMenu, lParam, hInst, hWnd_2);
                 
@@ -105,7 +108,9 @@ namespace Processes{
                 char ready_universe[] = "C:\\Users\\davyd\\Desktop\\forAPI.txt";
                 int l = LOWORD(wParam);
                 int h = HIWORD(wParam);
-                Supportive::switch_lparam_SuppMenu(&ptr_Field, &Field, &ptr_SuppMenu, ready_universe, l, hInst, hWnd_2);
+                smart_switch::Factory_SuppMenu factory = smart_switch::get_possible_options_for_supp_menu();
+                smart_switch::SwitchSuppMenu* option = factory.create_option(l);
+                option->execute_action(&ptr_Field, &Field, &ptr_SuppMenu, ready_universe, l, hInst, hWnd_2);
                 break;
                 }
             default: break;
@@ -157,8 +162,6 @@ namespace Processes{
                 }
             case WM_SIZE:
                 {
-                //ptr_Field->get_size_x() = LOWORD(lParam); 
-                //ptr_Field->get_size_y() = HIWORD(lParam); 
                 ptr_Field->set_size_x(LOWORD(lParam));
                 ptr_Field->set_size_y(HIWORD(lParam));
                 ptr_Field->SetButtonsPosition(&DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
@@ -184,8 +187,10 @@ namespace Processes{
                     ptr_Field->calculate_offline_mode(iteration, lParam);
                     break;
                 }
-                Supportive::switch_lparam_Field(l, &ptr_Field, iteration, &text, flag, &DumpButton, &TickButton, &ReturnButton, 
-                                    &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &file, name, file_reader);
+                smart_switch::Factory_Field factory = smart_switch::get_possible_options_for_field();
+                smart_switch::SwitchField* option = factory.create_option(l);
+                option->execute_action(l, &ptr_Field, iteration, &text, flag, &DumpButton, &TickButton, &ReturnButton, 
+                                 &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &file, name, file_reader);
                 break;
                 }
             case WM_CHAR:

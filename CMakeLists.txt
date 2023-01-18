@@ -17,6 +17,7 @@ set (Headers
     WinProcesses.hpp
     SupportiveFunctions.hpp
     SuppClasses.hpp
+    SwitchClasses.hpp
 )
 
 set (Sources
@@ -24,6 +25,7 @@ set (Sources
     WinProcesses.cpp
     SupportiveFunctions.cpp
     SuppClasses.cpp
+    SwitchClasses.cpp
 )
 
 add_executable(GAME WIN32 Life.cpp ${Headers} ${Sources})

@@ -90,59 +90,6 @@ namespace Classes{
 
         void init_window(TCHAR* win_name, WNDPROC win_proc);
 
-/*
-    private:
-        HWND window_d;
-        TCHAR* window_name = nullptr;
-        WNDCLASS window_class;
-        WNDPROC window_proc;
-        std::string cmd_input_file;
-        std::string cmd_output_file;
-        std::string cmd_iter_num;
-        int size_x;
-        int size_y;
-
-    public:
-
-        MainWindow(){}
-        void set_window_descriptor(HWND new_descriptor);
-        void set_window_name(TCHAR* new_name);
-        void set_window_class(WNDCLASS new_class);
-        void set_window_proc(WNDPROC new_proc);
-        void set_cmd_input_file(std::string cmd_input_file);
-        void set_cmd_output_file(std::string cmd_output_file);
-        void set_cmd_iter_num(std::string cmd_iter_num);
-        void set_size_x(int new_size);
-        void set_size_y(int new_size);
-        const HWND get_window_despriptor();
-        const int get_size_x();
-        const int get_size_y();
-        const std::string get_cmd_input_file();
-        const std::string get_cmd_output_file();
-        const std::string get_cmd_iter_num();
-
-        void create_win_class(HINSTANCE hInstance);
-
-        void CreateButton(HINSTANCE hInst, LPARAM lParam, HWND& hBtn, HWND hWnd, const TCHAR Name[], TCHAR visible_text[], int button_id);
-
-        void CreateAllButtons(HINSTANCE hInst, LPARAM lParam, HWND* DownloadButton,  HWND* ReadyButton, HWND* ReturnButton, HWND* OfflineButton);
-        
-        void SetButtonsPosition(HWND* DownloadButton, HWND* ReadyButton, HWND* ReturnButton, HWND* OfflineButton);
-
-        template <class Head> void show_windows(int command, Head head);
-
-        template <class Head, class... Args> void show_windows(int command, Head head, Args... args);
-
-        HWND create_window(const TCHAR* class_name, const TCHAR* win_name, DWORD style, int x, int y, int nWidth, int nHeight, HWND parent, HINSTANCE hInstanse, void* ptr);
-
-        void update_window(HWND win_d);
-
-        void move_window(HWND win_d, int x, int y, int nWidth, int nHeight, bool repaint);
-
-        void redraw_window(HWND win_d, bool erase);
-
-        void destroy_window(HWND win_d);
-*/
     };
 
     class GameField : public AbstractWindow{
@@ -168,11 +115,6 @@ namespace Classes{
         int read_matrix(int index, const char* buff, const int buff_size, const int size_x, const int size_y, std::vector<char> birth_needed, std::vector<char> survival_needed);
 
         int read_num(int* index, int& x, const char* buff, const int buff_size);
-    
-        //const int get_size_x();
-        //const int get_size_y();
-        //void set_size_x(int new_size);
-        //void set_size_y(int new_size);
 
         void get_birth_needed(std::vector<char> new_vec); 
         void get_survive_needed(std::vector<char> new_vec);

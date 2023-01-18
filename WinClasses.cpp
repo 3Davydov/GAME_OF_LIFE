@@ -136,26 +136,6 @@ namespace Classes{
     /*   
     Class "MainWindow"
     */
-/*
-    void MainWindow::create_win_class(HINSTANCE hInstance){
-            this->window_class.hInstance = hInstance;    
-            this->window_class.lpszClassName = this->window_name;   
-            this->window_class.lpfnWndProc = this->window_proc;  
-            this->window_class.style = CS_HREDRAW | CS_VREDRAW;  
-            this->window_class.hIcon = LoadIcon(NULL, IDI_APPLICATION); 
-            this->window_class.hCursor = LoadCursor(NULL,IDC_ARROW); 
-            this->window_class.lpszMenuName = NULL; 
-            this->window_class.cbClsExtra = NULL; 
-            this->window_class.cbWndExtra = NULL; 
-            this->window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-            RegisterClass(&(this->window_class));
-    }
-
-    void MainWindow::CreateButton(HINSTANCE hInst, LPARAM lParam, HWND& hBtn, HWND hWnd, const TCHAR Name[], TCHAR visible_text[], int button_id){
-            hInst = ((LPCREATESTRUCT)lParam)->hInstance;
-            hBtn = CreateWindow(Name, visible_text, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, NULL, NULL, NULL, hWnd, (HMENU) button_id, hInst, NULL);
-            ShowWindow(hBtn, SW_SHOWNORMAL);
-    }*/
     void MainWindow::init_window(TCHAR* win_name, WNDPROC win_proc){
         this->set_window_name(win_name);
         this->set_window_proc(win_proc);
@@ -175,87 +155,7 @@ namespace Classes{
         this->move_window(*OfflineButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + 35), button_whidth, button_heigh, TRUE);
         this->move_window(*ReturnButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2  + 135), button_whidth, button_heigh, TRUE);
     }
-/*
-    template <class Head> void MainWindow::show_windows(int command, Head head){
-        ShowWindow(head, command);
-    }
 
-    template <class Head, class... Args> void MainWindow::show_windows(int command, Head head, Args... args){
-        ShowWindow(head, command);
-        show_windows(command, args...);
-    }
-
-    HWND MainWindow::create_window(const TCHAR* class_name, const TCHAR* win_name, DWORD style, int x, int y, int nWidth, int nHeight, HWND parent, HINSTANCE hInstanse, void* ptr){
-        return CreateWindow(class_name, win_name, style, x, y, nWidth, nHeight, parent, NULL, hInstanse, ptr);
-    }
-
-    void MainWindow::update_window(HWND win_d){ 
-        UpdateWindow(win_d); 
-    }
-
-    void MainWindow::move_window(HWND win_d, int x, int y, int nWidth, int nHeight, bool repaint){
-        MoveWindow(win_d, x, y, nWidth, nHeight, repaint);
-    }
-
-    void MainWindow::redraw_window(HWND win_d, bool erase){ 
-        InvalidateRect(win_d, NULL, erase); 
-    }
-
-    void MainWindow::destroy_window(HWND win_d){ 
-        DestroyWindow(win_d); 
-    }
-
-    void MainWindow::set_window_descriptor(HWND new_descriptor){
-        if (new_descriptor != NULL) this->window_d = new_descriptor;
-    }
-    void MainWindow::set_window_name(TCHAR* new_name){
-        if (new_name != NULL && this->window_name == nullptr) this->window_name = new_name;
-    }
-    void MainWindow::set_window_class(WNDCLASS new_class){
-        this->window_class = new_class;
-    }
-    void MainWindow::set_window_proc(WNDPROC new_proc){
-        this->window_proc = new_proc;
-    }
-    void MainWindow::set_cmd_input_file(std::string cmd_input_file){
-        if (cmd_input_file.size() != 0) this->cmd_input_file = cmd_input_file;
-    }
-    void MainWindow::set_cmd_output_file(std::string cmd_output_file){
-        if (cmd_output_file.size() != 0) this->cmd_output_file = cmd_output_file;
-    }
-    
-    void MainWindow::set_cmd_iter_num(std::string cmd_iter_num){
-        if (cmd_iter_num.size() != 0) this->cmd_iter_num = cmd_iter_num;
-    }
-
-    const HWND MainWindow::get_window_despriptor(){
-        return this->window_d;
-    }
-
-    void MainWindow::set_size_x(int new_size){
-        if (new_size > 0) this->size_x = new_size;
-    }
-    void MainWindow::set_size_y(int new_size){
-        if (new_size > 0) this->size_y = new_size;
-    }
-
-    const int MainWindow::get_size_x(){
-        return this->size_x;
-    }
-    const int MainWindow::get_size_y(){
-        return this->size_y;
-    }
-
-    const std::string MainWindow::get_cmd_input_file(){
-        return this->cmd_input_file;
-    }
-    const std::string MainWindow::get_cmd_output_file(){
-        return this->cmd_output_file;
-    }
-    const std::string MainWindow::get_cmd_iter_num(){
-        return this->cmd_iter_num;
-    }
-*/
     /*
     Class "GameField"
     */
@@ -361,8 +261,6 @@ namespace Classes{
         this->survival_needed = survival_needed;
         set_size_x(size_x);
         set_size_y(size_y);
-        //this->size_x = size_x;
-        //this->size_y = size_y;
         this->create_matrix();
         int x, y;
 
@@ -381,19 +279,6 @@ namespace Classes{
 
         return succes;
     }
-/*
-    const int GameField::get_size_x(){
-        return this->get_size_x();
-    }
-    const int GameField::get_size_y(){
-        return this->get_size_y();
-    }
-    void GameField::set_size_x(int new_size){
-        if (new_size >= 0) this->set_size_x(new_size);
-    }
-    void GameField::set_size_y(int new_size){
-        if (new_size >= 0) this->set_size_y(new_size); 
-    }*/
 
     std::string GameField::set_output(){
         std::string output = "Univerce name: " + this->univerce_name;
@@ -450,32 +335,10 @@ namespace Classes{
     */
 
     void GamePlayWindow::init_window(TCHAR* win_name, WNDPROC win_proc){
-            //window_name = win_name;
-            //window_proc = win_proc;
             this->set_window_name(win_name);
             this->set_window_proc(win_proc);
             
     }
-
-   /* void GamePlayWindow::create_win_class(HINSTANCE hInstance, const TCHAR Name[], WNDPROC Proc, WNDCLASS& wc){
-            wc.hInstance = hInstance;    
-            wc.lpszClassName = Name;  
-            wc.lpfnWndProc = Proc;
-            wc.style = CS_HREDRAW | CS_VREDRAW;
-            wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-            wc.hCursor = LoadCursor(NULL,IDC_ARROW);
-            wc.lpszMenuName = NULL;
-            wc.cbClsExtra = NULL;
-            wc.cbWndExtra = NULL; 
-            wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-            RegisterClass(&wc);
-    }
-
-    void GamePlayWindow::CreateButton(HINSTANCE hInst, LPARAM lParam, HWND& hBtn, HWND hWnd, const TCHAR Name[], TCHAR visible_text[], int button_id){
-            hInst = ((LPCREATESTRUCT)lParam)->hInstance;
-            hBtn = CreateWindow(Name, visible_text, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, NULL, NULL, NULL, hWnd, (HMENU) button_id, hInst, NULL);
-            ShowWindow(hBtn, SW_SHOWNORMAL);
-    }*/
 
     void GamePlayWindow::CreateAllButtons(HINSTANCE hInst, LPARAM lParam, HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,
         HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button){
@@ -573,7 +436,6 @@ namespace Classes{
         out.open(out_file);
         if (!out.is_open()) MessageBox(this->get_window_despriptor(), _T("WRONG OUTPUT FILE NAME!"), _T("ERROR"), MB_OK);
         else{
-            //Supportive::dump_file(out, this);
             this->game_field->dump_file(out);
             out.close();
         }

@@ -42,8 +42,6 @@ namespace SuppClasses{
     public:
         ~FileReader(){
             delete [] buff;
-            //delete [] file_name;
-
         }
         void delete_data(std::string cmd_file){
             univerce_name.clear();

@@ -1,6 +1,7 @@
 #include "SupportiveFunctions.hpp"
 #include "WinClasses.hpp"
 #include "WinProcesses.hpp"
+#include "SwitchClasses.hpp"
 
 #pragma once
 
@@ -64,33 +65,6 @@ namespace Supportive{
         if (str_num.size() == 0) str_num += "0";
         return str_num;
     }
-/*
-    std::string set_output(Classes::GamePlayWindow* ptr_hWnd_3){
-        std::string output = "Univerce name: " + ptr_hWnd_3->game_field->univerce_name;
-        output += "    Rules:  B";
-        for (unsigned int i = 0; i < ptr_hWnd_3->game_field->birth_needed.size(); i++) output += (char) ptr_hWnd_3->game_field->birth_needed[i];
-        output += "/S";
-        for (unsigned int i = 0; i < ptr_hWnd_3->game_field->survival_needed.size(); i++) output += (char) ptr_hWnd_3->game_field->survival_needed[i];
-        output += "    Current iteration: ";
-        return output;
-    }
-
-    void dump_file(std::ofstream& out, Classes::GamePlayWindow* ptr_hWnd_3){
-        out << "#N " << ptr_hWnd_3->game_field->univerce_name << carriage_rollback << "#S " << ptr_hWnd_3->game_field->size_x << " " << ptr_hWnd_3->game_field->size_y << carriage_rollback << "#R B";
-
-        for (unsigned int i = 0; i < ptr_hWnd_3->game_field->birth_needed.size(); i++) out << ptr_hWnd_3->game_field->birth_needed[i];
-
-        out << "/S";
-
-        for (unsigned int i = 0; i < ptr_hWnd_3->game_field->survival_needed.size(); i++) out << ptr_hWnd_3->game_field->survival_needed[i];
-
-        for (int i = 0; i < ptr_hWnd_3->game_field->size_x; i++){
-            for (int j = 0; j < ptr_hWnd_3->game_field->size_y; j++){
-                if (ptr_hWnd_3->game_field->matrix[i][j] == alive) 
-                        out << carriage_rollback << -ptr_hWnd_3->game_field->size_x/2 + i <<  " " << ptr_hWnd_3->game_field->size_y/2 - j;
-            }
-        }
-    }*/
 
     void print_help_info(RECT st, HDC hdc){
         std::string to_window = "DUMP - save the universe to a file. You can select an existing file, or create a new one";
@@ -133,82 +107,7 @@ namespace Supportive{
         hInst = ((LPCREATESTRUCT)info)->hInstance;
         SetWindowLongPtr(window, GWLP_USERDATA, (LONG)((LPCREATESTRUCT)info)->lpCreateParams);
         *ptr_window = (Classes::GamePlayWindow*)GetWindowLongPtr(window, GWLP_USERDATA);
-        //(*ptr_window)->window_d = window;
         (*ptr_window)->set_window_descriptor(window);
-    }
-
-    void switch_lparam_MainMenu(LPARAM message, Classes::MainWindow** ptr_window, HWND hWnd, Classes::MainWindow* next_window, Classes::MainWindow** ptr_next_window, HINSTANCE hInst){
-        switch(message){
-            case menu_green: {
-                HBRUSH greenBrush = CreateSolidBrush(RGB(40,80,0));
-                (*ptr_window)->redraw_window((*ptr_window)->get_window_despriptor(), TRUE);
-                SetClassLong(hWnd,GCLP_HBRBACKGROUND,(LONG)greenBrush);
-                break; }
-            case menu_white: {
-                HBRUSH whiteBrush = CreateSolidBrush(RGB(255,255,255));
-                (*ptr_window)->redraw_window((*ptr_window)->get_window_despriptor(), TRUE);
-                SetClassLong(hWnd,GCLP_HBRBACKGROUND,(LONG)whiteBrush);
-                break; }
-            case menu_exit: {
-                if (MessageBox(hWnd, _T("Really exit?"), _T("Think twice"), MB_OKCANCEL) == IDOK){
-                    (*ptr_window)->destroy_window((*ptr_window)->get_window_despriptor());
-                }
-                break; }
-            case rules_button: {
-                (*ptr_window)->destroy_window((*ptr_window)->get_window_despriptor());
-                break; }
-            case play_button: {
-                (*next_window).set_cmd_input_file((*ptr_window)->get_cmd_input_file());
-                (*next_window).set_cmd_output_file((*ptr_window)->get_cmd_output_file());
-                (*next_window).set_cmd_iter_num((*ptr_window)->get_cmd_iter_num());
-                HWND descrp = (*next_window).create_window(PName, _T("Play"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd, hInst, *ptr_next_window);
-                (*next_window).set_window_descriptor(descrp);
-                (*next_window).show_windows(SW_MAXIMIZE, (*next_window).get_window_despriptor());
-                (*ptr_window)->show_windows(SW_HIDE, (*ptr_window)->get_window_despriptor());
-                break; }
-        }    
-    }
-
-    void switch_lparam_SuppMenu(Classes::GamePlayWindow** ptr_Field, Classes::GamePlayWindow* Field, Classes::MainWindow** ptr_SuppMenu, 
-                                char* ready_universe, LPARAM message, HINSTANCE hInst, HWND hWnd_2){
-        switch(message){
-            case choose_file: {
-                //(*Field).window_d = (*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field);
-                (*Field).set_window_descriptor((*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field));
-                (*Field).show_windows(SW_MAXIMIZE, (*Field).get_window_despriptor());
-                (*ptr_SuppMenu)->show_windows(SW_HIDE, (*ptr_SuppMenu)->get_window_despriptor());
-                break; }
-            case choose_random: {
-                (*ptr_Field)->set_file_name(ready_universe);
-                //(*Field).window_d = (*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field);
-                (*Field).set_window_descriptor((*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field));
-                (*Field).show_windows(SW_MAXIMIZE, (*Field).get_window_despriptor());
-                (*ptr_SuppMenu)->show_windows(SW_HIDE, (*ptr_SuppMenu)->get_window_despriptor());
-                break; }
-            case choose_offline: {
-                if ((*ptr_SuppMenu)->get_cmd_input_file().length() == 0){
-                        MessageBox((*ptr_Field)->get_window_despriptor(), _T("NO INPUT FILE!"), _T("ERROR"), MB_OK);
-                }
-                else{
-                    //(*Field).cmd_input_file = (*ptr_SuppMenu)->get_cmd_input_file();
-                    (*Field).set_cmd_input_file((*ptr_SuppMenu)->get_cmd_input_file());
-                    //(*Field).cmd_output_file = (*ptr_SuppMenu)->get_cmd_output_file();
-                    (*Field).set_cmd_output_file((*ptr_SuppMenu)->get_cmd_output_file());
-                    //(*Field).cmd_iter_num = (*ptr_SuppMenu)->get_cmd_iter_num();
-                    (*Field).set_cmd_iter_num((*ptr_SuppMenu)->get_cmd_iter_num());
-                    //(*Field).window_d = (*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field);
-                    (*Field).set_window_descriptor((*Field).create_window(GName, _T("Game"), WS_OVERLAPPEDWINDOW, 0, 0, 500, 500, hWnd_2, hInst, *ptr_Field));
-                    (*Field).show_windows(SW_MAXIMIZE, (*Field).get_window_despriptor());
-                    (*ptr_SuppMenu)->show_windows(SW_HIDE, (*ptr_SuppMenu)->get_window_despriptor());
-                }
-                break; }
-            case choose_exit: {
-                HWND hc;
-                hc = FindWindow(WinName,  _T("Application"));
-                ShowWindow(hc, SW_SHOW);
-                (*ptr_SuppMenu)->destroy_window((*ptr_SuppMenu)->get_window_despriptor());
-                break; }
-        }
     }
 
     void choose_file_to_open(Classes::GamePlayWindow** ptr_Field, char** buff, OPENFILENAME* file, TCHAR* name, Classes::GameField* child, SuppClasses::FileReader* file_reader){
@@ -252,63 +151,6 @@ namespace Supportive{
         (*file).Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_READONLY;
     }
 
-    void switch_lparam_Field(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
-                            HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
-        HWND hc;
-        switch(lParam){
-            case choose__exit: {
-                hc = FindWindow(PName,  _T("PLAY"));
-                ShowWindow(hc, SW_SHOW);
-                //(*ptr_Field)->game_field->survival_needed.clear();
-                //(*ptr_Field)->game_field->birth_needed.clear();
-                //(*ptr_Field)->game_field->univerce_name.clear();
-                (*ptr_Field)->get_game_field_pointer()->clear();
-                iteration = 0;
-                (*ptr_Field)->get_game_field_pointer()->destroy_window((*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-                (*ptr_Field)->destroy_window((*ptr_Field)->get_window_despriptor());
-                break; }
-            case choose_tick: {
-                iteration++;
-                SendMessage((*ptr_Field)->get_game_field_pointer()->get_window_despriptor(), change_matrix, (WPARAM) (*ptr_Field)->get_game_field_pointer(), NULL);
-                InvalidateRect((*ptr_Field)->get_window_despriptor(), NULL, TRUE);
-                break; }
-            case choose_dump: {
-                (*ptr_Field)->show_windows(SW_HIDE, *DumpButton, *TickButton, *ReturnButton, *HelpButton,  (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-                (*ptr_Field)->show_windows(SW_SHOW, *ExistButton, *NewButton);
-                break; }
-            case choose_help: {
-                if (IsWindowVisible((*ptr_Field)->get_game_field_pointer()->get_window_despriptor())){
-                    (*ptr_Field)->show_windows(SW_HIDE, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-                    (*ptr_Field)->show_windows(SW_SHOW, *Return_To_Game_Button);
-                    (*ptr_Field)->redraw_window((*ptr_Field)->get_window_despriptor(), TRUE);
-                }
-                break; }
-            case return_to_game: {
-                (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-                (*ptr_Field)->show_windows(SW_HIDE, *Return_To_Game_Button);
-                (*ptr_Field)->redraw_window((*ptr_Field)->get_window_despriptor(), TRUE);
-                break; }
-            case exist_file: {
-                GetOpenFileName(file);
-                std::ofstream out;
-                out.open(name);
-                //dump_file(out, (*ptr_Field));
-                (*ptr_Field)->get_game_field_pointer()->dump_file(out);
-                out.close();
-                (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-                (*ptr_Field)->show_windows(SW_HIDE, *ExistButton, *NewButton);
-                break; }
-            case new_file: {
-                (*ptr_Field)->show_windows(SW_HIDE, *ExistButton, *NewButton);
-                *text = new char[100];
-                for (int i = 0; i < 100; i++) (*text)[i] = 0;
-                flag = 1;
-                SendMessage((*ptr_Field)->get_window_despriptor(), WM_CHAR, VK_BACK, 0);
-                break; }
-        }
-    }
-
     void display_file_name(int& flag, int& size_out, char** text, Classes::GamePlayWindow** ptr_Field, WPARAM wParam, HWND* DumpButton, 
                             HWND* TickButton, HWND* ReturnButton,HWND* HelpButton){
         if (flag == 1) add_new_symbol(size_out, wParam, *text, *ptr_Field);
@@ -317,7 +159,6 @@ namespace Supportive{
             (*text)[size_out] = '\0';
             std::ofstream out;
             out.open(*text);
-            //dump_file(out, *ptr_Field);
             (*ptr_Field)->get_game_field_pointer()->dump_file(out);
             out.close();
             (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
