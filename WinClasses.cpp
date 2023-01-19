@@ -1,59 +1,12 @@
 #include "WinClasses.hpp"
 #include "WinProcesses.hpp"
 #include "SupportiveFunctions.hpp"
+#include "MyConstants.hpp"
 
 #pragma once
 
+using namespace game_of_life_constants;
 namespace Classes{
-
-    const int alive = 1;
-    const int dead = 0;
-    const int wrong_format = 2;
-    const int wrong_size = 3;
-    const int wrong_coordinate = 4;
-    const int not_a_digit = 5;
-    const int convert_to_int = 48;
-    const char minus = '-';
-    const char backslash = '/';
-    const char space = ' ';
-    const char name_symbol = 'N';
-    const char size_symbol = 'S';
-    const char rules_symbol = 'R';
-    const char carriage_rollback = '\r';
-    const char new_line = '\n';
-    const char grid = '#';
-    const TCHAR ChildClassName[] = _T("WinChild");
-    const TCHAR WinName[] = _T("MainFrame");
-    const TCHAR RName[] = _T("RulesFrame");
-    const TCHAR PName[] = _T("PlayFrame");
-    const TCHAR BName[] = _T("button");
-    const TCHAR GName[] = _T("GamePlayFrame");
-    const TCHAR ChName[] = _T("ChildFrame");
-    const int choose_random = 1006;
-    const int choose_file = 1007;
-    const int choose_exit = 1008;
-    const int choose_offline = 1009;
-    const int choose_dump = 1010;
-    const int choose_tick = 1011;
-    const int choose__exit = 1012;
-    const int choose_help = 1013;
-    const int max_whidth = 130;
-    const int max_heigh = 73;
-    const int succes = 1018;
-    const int new_file = 1016;
-    const int return_to_game = 1020;
-    const int redraw = WM_USER + 100;
-    const int change_matrix_for_iter = WM_USER + 102;
-    const int plus_sign = 1;
-    const int minus_sign = -1;
-    const int num_is_digit = 1;
-    const int num_not_a_digit = 0;
-    const int play_button_heigh = 150;
-    const int play_button_whidth = 200;
-    const int button_heigh = 30;
-    const int button_whidth = 500;
-    const int exist_file = 1015;
-
 
     /*
     Class "AbstractWindow"
@@ -92,19 +45,19 @@ namespace Classes{
     }
 
     void AbstractWindow::set_cmd_input_file(std::string cmd_input_file){
-        if (cmd_input_file.size() != 0) this->cmd_input_file = cmd_input_file;
+        if (cmd_input_file.size() != empty_param) this->cmd_input_file = cmd_input_file;
     }
     void AbstractWindow::set_cmd_output_file(std::string cmd_output_file){
-        if (cmd_output_file.size() != 0) this->cmd_output_file = cmd_output_file;
+        if (cmd_output_file.size() != empty_param) this->cmd_output_file = cmd_output_file;
     }    
     void AbstractWindow::set_cmd_iter_num(std::string cmd_iter_num){
-        if (cmd_iter_num.size() != 0) this->cmd_iter_num = cmd_iter_num;
+        if (cmd_iter_num.size() != empty_param) this->cmd_iter_num = cmd_iter_num;
     }
     void AbstractWindow::set_size_x(int new_size){
-        if (new_size > 0) this->size_x = new_size;
+        if (new_size > empty_param) this->size_x = new_size;
     }
     void AbstractWindow::set_size_y(int new_size){
-        if (new_size > 0) this->size_y = new_size;
+        if (new_size > empty_param) this->size_y = new_size;
     }
  
     const std::string AbstractWindow::get_cmd_input_file(){
@@ -150,10 +103,10 @@ namespace Classes{
     }
 
     void MainWindow::SetButtonsPosition(HWND* DownloadButton, HWND* ReadyButton, HWND* ReturnButton, HWND* OfflineButton){
-        this->move_window(*DownloadButton, this->get_size_x()/2 - button_whidth/2, this->get_size_y()/2 - 165, button_whidth, button_heigh, TRUE);
-        this->move_window(*ReadyButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 - 75), button_whidth, button_heigh, TRUE);
-        this->move_window(*OfflineButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + 35), button_whidth, button_heigh, TRUE);
-        this->move_window(*ReturnButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2  + 135), button_whidth, button_heigh, TRUE);
+        this->move_window(*DownloadButton, this->get_size_x()/2 - button_whidth/2, this->get_size_y()/2 - offset_for_download_button, button_whidth, button_heigh, TRUE);
+        this->move_window(*ReadyButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 - offset_for_ready_button), button_whidth, button_heigh, TRUE);
+        this->move_window(*OfflineButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + offset_for_offline_button), button_whidth, button_heigh, TRUE);
+        this->move_window(*ReturnButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2  + offset_for_return_button), button_whidth, button_heigh, TRUE);
     }
 
     /*
@@ -239,12 +192,12 @@ namespace Classes{
         while(buff[*index] != space && buff[*index] != carriage_rollback && buff[*index] != new_line){
             if (buff[*index] != minus) str_num += buff[*index];
             if (buff[*index] == minus) sign = minus_sign;
-            (*index) += 1;
+            (*index) += small_step;
             if (*index == buff_size) break;
         }
 
-        int num = 0;
-        if (str_num.length() == 0) return num_not_a_digit;
+        int num = NULL;
+        if (str_num.length() == empty_param) return num_not_a_digit;
 
         try{
             num = std::stoi(str_num);
@@ -266,14 +219,14 @@ namespace Classes{
 
         while (index <= buff_size && (buff_size != 0)){
             if (!read_num(&index, x, buff, buff_size)) return not_a_digit;
-            index += 1;
+            index += small_step;
             if (!read_num(&index, y, buff, buff_size)) return not_a_digit;
             if ((abs(x) > get_size_x() / 2 && x > 0) || (abs(y) > get_size_y() / 2 && y > 0)) 
                 return wrong_coordinate;
             if ((abs(x) > size_x / 2 && x < 0) || (abs(y) > get_size_y() / 2 && y < 0)) 
                 return wrong_coordinate;
             this->matrix[get_size_x() / 2 + x][this->get_size_y() / 2 - y] = alive;
-            index += 1;
+            index += small_step;
         }
         HWND desc = NULL;
         desc = this->get_window_despriptor();
@@ -355,13 +308,13 @@ namespace Classes{
 
     void GamePlayWindow::SetButtonsPosition(HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,
         HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button){
-            this->move_window(*DumpButton, 10, 10, play_button_whidth, play_button_heigh, TRUE);
-            this->move_window(*TickButton, 10, 220, play_button_whidth, play_button_heigh, TRUE);
-            this->move_window(*HelpButton, 10, 430, play_button_whidth, play_button_heigh, TRUE);
-            this->move_window(*ReturnButton, 10, 640, play_button_whidth, play_button_heigh, TRUE);
-            this->move_window(*ExistButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 - 55), button_whidth, button_heigh, TRUE);
-            this->move_window(*NewButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + 25), button_whidth, button_heigh, TRUE);
-            this->move_window(*Return_To_Game_Button, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + 200), button_whidth, button_heigh, TRUE);
+            this->move_window(*DumpButton, indent, indent, play_button_whidth, play_button_heigh, TRUE);
+            this->move_window(*TickButton, indent, button_y_space, play_button_whidth, play_button_heigh, TRUE);
+            this->move_window(*HelpButton, indent, button_y_space * 2 - indent, play_button_whidth, play_button_heigh, TRUE);
+            this->move_window(*ReturnButton, indent, button_y_space * 3 - indent * 2, play_button_whidth, play_button_heigh, TRUE);
+            this->move_window(*ExistButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 - offset_for_offline_button - indent*2), button_whidth, button_heigh, TRUE);
+            this->move_window(*NewButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + offset_for_offline_button - indent), button_whidth, button_heigh, TRUE);
+            this->move_window(*Return_To_Game_Button, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + button_y_space - indent*2), button_whidth, button_heigh, TRUE);
             this->show_windows(SW_HIDE, *ExistButton, *NewButton, *Return_To_Game_Button);
         }
 
@@ -369,7 +322,7 @@ namespace Classes{
         switch(result){
             case succes:
                 {
-                this->move_window((*child).get_window_despriptor(), 220, 11, (*child).get_size_x() * 10 + 2, (*child).get_size_y() * 10 + 2, TRUE);
+                this->move_window((*child).get_window_despriptor(), button_y_space, indent + 1, (*child).get_size_x() * indent + 2, (*child).get_size_y() * indent + 2, TRUE);
                 (*child).show_windows(SW_SHOW, (*child).get_window_despriptor());
                 this->redraw_window(this->get_window_despriptor(), TRUE);
                 break;
@@ -401,19 +354,19 @@ namespace Classes{
                                         RECT* st_t, char* text, RECT* st_t1, int size_out, int iteration){
         HDC hdc;
         PAINTSTRUCT ps;
-        (*st).left = 220;
-        (*st).top = 742;
-        (*st).right = 1300;
-        (*st).bottom = 772;
+        (*st).left = button_y_space;
+        (*st).top = paintstruct_top;
+        (*st).right = paintstruct_right;
+        (*st).bottom = paintstruct_bottom;
         int wP = wParam;
         hdc = BeginPaint(this->get_window_despriptor(), &ps);
         GetClientRect(this->get_window_despriptor(), st_t);
-        if (flag == 1){
-            char advice[30] = "Enter the full file name here";
+        if (flag == flag_activated){
+            char advice[advice_size] = "Enter the full file name here";
             GetClientRect(this->get_window_despriptor(), st);
-            (*st_t1).top = 400;
-            (*st_t1).bottom = 450;
-            DrawText(hdc, advice, 30, st, DT_SINGLELINE | DT_CENTER);
+            (*st_t1).top = button_y_space - indent*2;
+            (*st_t1).bottom = button_y_space * 2 + indent;
+            DrawText(hdc, advice, indent * 3, st, DT_SINGLELINE | DT_CENTER);
             DrawText(hdc, (LPCSTR) text, size_out, st, DT_SINGLELINE|DT_CENTER|DT_VCENTER);
             return;
         }
@@ -432,8 +385,8 @@ namespace Classes{
         SendMessage(this->game_field->get_window_despriptor(), change_matrix_for_iter, (WPARAM) this->game_field, lParam);
         InvalidateRect(this->get_window_despriptor(), NULL, TRUE);
         std::ofstream out;
-        char out_file[200];
-        out_file[this->get_cmd_output_file().size()] = '\0';
+        char out_file[out_file_size];
+        out_file[this->get_cmd_output_file().size()] = end_of_string;
         std::copy(this->get_cmd_output_file().begin(), this->get_cmd_output_file().end(), out_file);
         out.open(out_file);
         if (!out.is_open()) MessageBox(this->get_window_despriptor(), _T("WRONG OUTPUT FILE NAME!"), _T("ERROR"), MB_OK);

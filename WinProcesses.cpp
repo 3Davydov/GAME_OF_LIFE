@@ -4,37 +4,15 @@
 #include "SupportiveFunctions.hpp"
 #include "SuppClasses.hpp"
 #include "SwitchClasses.hpp"
+#include "MyConstants.hpp"
 
 using namespace Classes;
 
 #pragma once
 
+using namespace game_of_life_constants;
 namespace Processes{
-
-    const TCHAR ChildClassName[] = _T("WinChild");
-    const TCHAR WinName[] = _T("MainFrame");
-    const TCHAR RName[] = _T("RulesFrame");
-    const TCHAR PName[] = _T("PlayFrame");
-    const TCHAR BName[] = _T("button");
-    const TCHAR GName[] = _T("GamePlayFrame");
-    const TCHAR ChName[] = _T("ChildFrame");
-    const int play_button = 101;
-    const int rules_button = 100;
-    const int TubPressed = 1004;
-    const int menu_exit = 1000;
-    const int change_matrix = WM_USER + 101;
-    const int change_matrix_for_iter = WM_USER + 102;
-    const int redraw = WM_USER + 100;
-    const int offline_mode = 3000;
-    const int play_button_heigh = 150;
-    const int play_button_whidth = 200;
-    const int button_heigh = 30;
-    const int button_whidth = 500;
-    const int succes = 1018;
-    const int empty_buff = -1;
     
-
-
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     
     static HWND PlayButton, ExitButton;
@@ -54,13 +32,13 @@ namespace Processes{
                 ptr_MainMenu->CreateButton(hInst, lParam, ExitButton, hWnd, BName, _T("EXIT"), rules_button);
                 break; }
             case WM_DESTROY: {
-                PostQuitMessage(0); 
+                PostQuitMessage(NULL); 
                 break; }
             case WM_SIZE: {
                 ptr_MainMenu->set_size_x(LOWORD(lParam));
                 ptr_MainMenu->set_size_y(HIWORD(lParam));
-                ptr_MainMenu->move_window(PlayButton, (ptr_MainMenu->get_size_x()/2 - button_whidth/2), (ptr_MainMenu->get_size_y()/2 - 55), button_whidth, button_heigh, TRUE);
-                ptr_MainMenu->move_window(ExitButton, (ptr_MainMenu->get_size_x()/2 - button_whidth/2), (ptr_MainMenu->get_size_y()/2 + 25), button_whidth, button_heigh, TRUE);
+                ptr_MainMenu->move_window(PlayButton, (ptr_MainMenu->get_size_x()/2 - button_whidth/2), (ptr_MainMenu->get_size_y()/2 - offset_for_play_button), button_whidth, button_heigh, TRUE);
+                ptr_MainMenu->move_window(ExitButton, (ptr_MainMenu->get_size_x()/2 - button_whidth/2), (ptr_MainMenu->get_size_y()/2 + offset_for_exit_button), button_whidth, button_heigh, TRUE);
                 break; }
             case WM_COMMAND: {
                 MainWindow* ptr_SuppMenu = &SuppMenu;
@@ -68,7 +46,6 @@ namespace Processes{
                 int h = HIWORD(wParam);
                 int tub_pressed = wParam;
                 if (tub_pressed == TubPressed) l = menu_exit;
-                //Supportive::switch_lparam_MainMenu(l, &ptr_MainMenu, hWnd, &SuppMenu, &ptr_SuppMenu, hInst);
                 smart_switch::Factory_MainMenu factory = smart_switch::get_possible_options_for_main_menu();
                 smart_switch::SwitchMainMenu* option = factory.create_option(l);
                 option->execute_action(&ptr_MainMenu, hWnd, &SuppMenu, &ptr_SuppMenu, hInst);
@@ -105,7 +82,7 @@ namespace Processes{
             case WM_COMMAND:
                 {
                 GamePlayWindow* ptr_Field = &Field;
-                char ready_universe[] = "C:\\Users\\davyd\\Desktop\\forAPI.txt";
+                char ready_universe[] = "..\\..\\DefaultUniverse.txt";
                 int l = LOWORD(wParam);
                 int h = HIWORD(wParam);
                 smart_switch::Factory_SuppMenu factory = smart_switch::get_possible_options_for_supp_menu();
@@ -119,19 +96,19 @@ namespace Processes{
     }
 
     LRESULT CALLBACK WndProc_3(HWND hWnd_3, UINT message, WPARAM wParam, LPARAM lParam){
-        static int iteration = 0;
+        static int iteration = NULL;
         static HINSTANCE hInst;
         static HWND DumpButton, TickButton, ReturnButton, HelpButton, ExistButton, NewButton, Return_To_Game_Button;
         static GameField child;
         static GamePlayWindow* ptr_Field;
         static OPENFILENAME file;
-        static TCHAR name[256] = _T("");
+        static TCHAR name[nMaxbuff] = _T("");
         static char* buff = nullptr;
         static RECT st, st_t, st_t1;
         static std::string output;
         Supportive::set_file_settings(&file, hInst, name);
         static char* text;
-        static int flag = 0, size_out;
+        static int flag = NULL, size_out;
         static SuppClasses::FileReader* file_reader = new SuppClasses::FileReader;
 
         switch(message){
@@ -147,7 +124,7 @@ namespace Processes{
                 ptr_Field->CreateAllButtons(hInst, lParam, &DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
                 HWND descr;
                 if (file_reader->get_buff_size() != empty_buff){
-                    descr = child.create_window(_T("ChildFrame"), _T("Child"), WS_CHILD | WS_BORDER, NULL, NULL, 1300, 720, hWnd_3, hInst, ptr_child);
+                    descr = child.create_window(_T("ChildFrame"), _T("Child"), WS_CHILD | WS_BORDER, NULL, NULL, win_whidth, win_height, hWnd_3, hInst, ptr_child);
                     child.set_window_descriptor(descr);
                     descr = NULL;
                     descr = child.get_window_despriptor();
@@ -167,7 +144,7 @@ namespace Processes{
                 ptr_Field->SetButtonsPosition(&DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
                 ptr_Field->set_game_field_pointer(&child);
 
-                int res = 0;
+                int res = NULL;
                 res = child.read_matrix(file_reader->get_current_index(), file_reader->get_buffer(), file_reader->get_buff_size(), file_reader->get_size_x(), 
                                         file_reader->get_size_y(), file_reader->get_birth(), file_reader->get_survive());
                 child.get_univerce_name(file_reader->get_univerce_name());

@@ -18,6 +18,7 @@ set (Headers
     SupportiveFunctions.hpp
     SuppClasses.hpp
     SwitchClasses.hpp
+    MyConstants.hpp
 )
 
 set (Sources

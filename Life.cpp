@@ -1,15 +1,12 @@
 #include "WinProcesses.hpp"
 #include "WinClasses.hpp"
 #include "SupportiveFunctions.hpp"
+#include "MyConstants.hpp"
+
+using namespace game_of_life_constants;
 
 int APIENTRY _tWinMain (HINSTANCE This, HINSTANCE Prev,  LPTSTR cmd,   int mode){
 
-    const TCHAR WinName[] = _T("MainFrame"); 
-    const int input_file = 1;
-    const int iter_num = 2;
-    const int output_file = 3;
-    const int no_args = 1;
-    
     LPWSTR *argv;
     int argc;
     argv = CommandLineToArgvW(GetCommandLineW(), &argc);
