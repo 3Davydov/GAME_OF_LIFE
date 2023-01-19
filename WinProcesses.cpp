@@ -68,7 +68,6 @@ namespace Processes{
                 Field.init_window(_T("GamePlayFrame"), WndProc_3);
                 Field.create_win_class(hInst);
                 Supportive::get_window_description(&ptr_SuppMenu, lParam, hInst, hWnd_2);
-                
                 ptr_SuppMenu->CreateAllButtons(hInst, lParam, &DownloadButton, &ReadyButton, &ReturnButton, &OfflineButton);
                 break;
                 }
@@ -128,7 +127,7 @@ namespace Processes{
                     child.set_window_descriptor(descr);
                     descr = NULL;
                     descr = child.get_window_despriptor();
-                }
+                }   
                 else{
                     HWND hc;
                     hc = FindWindow(PName,  _T("PLAY"));

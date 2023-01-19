@@ -83,7 +83,6 @@ namespace Supportive{
         (*ptr_Field)->set_game_field_pointer(child);
         if ((*ptr_Field)->get_filename() != nullptr) (*file_reader).set_filename((*ptr_Field)->get_filename());
         if ((*ptr_Field)->get_cmd_input_file() != ""){
-
             (*file_reader).set_filename((*ptr_Field)->get_cmd_input_file());
         } 
         if ((*file_reader).get_filename() == nullptr){
@@ -120,6 +119,15 @@ namespace Supportive{
         (*file).Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_READONLY;
     }
 
+    bool is_exists (char* name) {
+        if (FILE *file = fopen(name, "r")) {
+            fclose(file);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void display_file_name(int& flag, int& size_out, char** text, Classes::GamePlayWindow** ptr_Field, WPARAM wParam, HWND* DumpButton, 
                             HWND* TickButton, HWND* ReturnButton,HWND* HelpButton){
         if (flag == flag_activated) add_new_symbol(size_out, wParam, *text, *ptr_Field);
@@ -127,12 +135,21 @@ namespace Supportive{
             flag = NULL;                
             (*text)[size_out] = end_of_string;
             std::ofstream out;
-            out.open(*text);
-            (*ptr_Field)->get_game_field_pointer()->dump_file(out);
-            out.close();
-            (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
-            size_out = NULL;
-            delete [] (*text);
+            if (!is_exists(*text)){
+                MessageBox((*ptr_Field)->get_window_despriptor(), _T("WRONG FILE NAME!"), _T("ERROR"), MB_OK);
+                (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
+                size_out = NULL;
+                delete [] (*text);
+                return;
+            }
+            else { 
+                out.open(*text);
+                (*ptr_Field)->get_game_field_pointer()->dump_file(out);
+                out.close();
+                (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
+                size_out = NULL;
+                delete [] (*text);
+            }
         }
     }
 

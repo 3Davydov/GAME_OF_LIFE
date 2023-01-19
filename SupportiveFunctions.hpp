@@ -49,4 +49,7 @@ namespace Supportive{
 
     void create_alive_unit(Classes::GameField** ptr_child, LPARAM lParam);
 
+    bool is_exists (char* name);
+
+
 }

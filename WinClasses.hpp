@@ -29,12 +29,11 @@ namespace Classes{
         int size_x = 0;
         int size_y = 0;
     public:
-
         void set_window_descriptor(HWND new_descriptor);
         void set_window_name(TCHAR* new_name);
         void set_window_class(WNDCLASS new_class);
         void set_window_proc(WNDPROC new_proc);
-         void set_cmd_input_file(std::string cmd_input_file);
+        void set_cmd_input_file(std::string cmd_input_file);
         void set_cmd_output_file(std::string cmd_output_file);
         void set_cmd_iter_num(std::string cmd_iter_num);
         void set_size_x(int new_size);

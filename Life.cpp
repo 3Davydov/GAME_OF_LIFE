@@ -31,7 +31,6 @@ int APIENTRY _tWinMain (HINSTANCE This, HINSTANCE Prev,  LPTSTR cmd,   int mode)
     Supportive::add_menu_to_main(hWnd, mii_system);
     hWnd.show_windows(SW_MAXIMIZE, hWnd.get_window_despriptor());
     hWnd.update_window(hWnd.get_window_despriptor());
-    
     MSG msg;
     while(GetMessage(&msg, NULL, NULL, NULL)) { 
         TranslateMessage(&msg); 

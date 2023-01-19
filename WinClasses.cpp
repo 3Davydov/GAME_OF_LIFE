@@ -45,13 +45,13 @@ namespace Classes{
     }
 
     void AbstractWindow::set_cmd_input_file(std::string cmd_input_file){
-        if (cmd_input_file.size() != empty_param) this->cmd_input_file = cmd_input_file;
+        this->cmd_input_file = cmd_input_file;
     }
     void AbstractWindow::set_cmd_output_file(std::string cmd_output_file){
-        if (cmd_output_file.size() != empty_param) this->cmd_output_file = cmd_output_file;
+        this->cmd_output_file = cmd_output_file;
     }    
     void AbstractWindow::set_cmd_iter_num(std::string cmd_iter_num){
-        if (cmd_iter_num.size() != empty_param) this->cmd_iter_num = cmd_iter_num;
+        this->cmd_iter_num = cmd_iter_num;
     }
     void AbstractWindow::set_size_x(int new_size){
         if (new_size > empty_param) this->size_x = new_size;
@@ -381,19 +381,23 @@ namespace Classes{
     }
 
     void GamePlayWindow::calculate_offline_mode(int& iteration, LPARAM lParam){
+        if (this->get_cmd_input_file() == ""){
+            MessageBox(this->get_window_despriptor(), _T("Offline mode has been already done"), _T("Error"), MB_OK);
+            return;
+        }
         iteration += lParam;
         SendMessage(this->game_field->get_window_despriptor(), change_matrix_for_iter, (WPARAM) this->game_field, lParam);
         InvalidateRect(this->get_window_despriptor(), NULL, TRUE);
         std::ofstream out;
-        char out_file[out_file_size];
-        out_file[this->get_cmd_output_file().size()] = end_of_string;
-        std::copy(this->get_cmd_output_file().begin(), this->get_cmd_output_file().end(), out_file);
-        out.open(out_file);
+        out.open(this->get_cmd_output_file().c_str());
         if (!out.is_open()) MessageBox(this->get_window_despriptor(), _T("WRONG OUTPUT FILE NAME!"), _T("ERROR"), MB_OK);
         else{
             this->game_field->dump_file(out);
             out.close();
         }
+        this->set_cmd_input_file("");
+        this->set_cmd_iter_num("");
+        this->set_cmd_output_file("");
     }
 
     GameField* GamePlayWindow::get_game_field_pointer(){
