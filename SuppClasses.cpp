@@ -47,7 +47,8 @@ namespace SuppClasses{
 
     int FileReader::get_buffer_size(){
         FILE* f;
-        if (fopen_s(&f, this->file_name, "r")) return -1;
+        if (fopen_s(&f, this->file_name, "r")) 
+            return -1;
         fseek(f, 0, SEEK_END);
         int size = ftell(f);
         fclose(f);
@@ -114,7 +115,7 @@ namespace SuppClasses{
             index++;
         }
 
-        index += 2; // ?????????? S
+        index += 2;
 
         while (this->buff[index] != carriage_rollback && this->buff[index] != new_line) {
             if (index >= this->buff_size){
@@ -129,12 +130,12 @@ namespace SuppClasses{
     }
 
     int FileReader::read_buffer(Classes::GameField* game_field){
+        int index = 0;
         this->buff_size = empty_buff;
         this->buff_size = this->get_buffer_size();
         if (this->buff_size == empty_buff) return wrong_format;
         this->buff = new char [this->buff_size];
         this->fill_buffer();
-        int index = 0;
         int tmp_res = read_name_and_size(index);
         if (tmp_res != succes) return tmp_res;
 

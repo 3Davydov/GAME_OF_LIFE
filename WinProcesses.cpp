@@ -168,7 +168,9 @@ namespace Processes{
                 ptr_Field->set_game_field_pointer(&child);
 
                 int res = 0;
-                res = child.read_matrix(file_reader->get_current_index(), file_reader->get_buffer(), file_reader->get_buff_size(), file_reader->get_size_x(), file_reader->get_size_y(), file_reader->get_birth(), file_reader->get_survive());
+                res = child.read_matrix(file_reader->get_current_index(), file_reader->get_buffer(), file_reader->get_buff_size(), file_reader->get_size_x(), 
+                                        file_reader->get_size_y(), file_reader->get_birth(), file_reader->get_survive());
+                child.get_univerce_name(file_reader->get_univerce_name());
                 ptr_Field->check_buff_reading(res, &child);
                 Supportive::check_cmd_input(&ptr_Field, file_reader);
                 break;

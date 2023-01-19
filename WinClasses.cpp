@@ -264,12 +264,14 @@ namespace Classes{
         this->create_matrix();
         int x, y;
 
-        while (index <= buff_size){
+        while (index <= buff_size && (buff_size != 0)){
             if (!read_num(&index, x, buff, buff_size)) return not_a_digit;
             index += 1;
             if (!read_num(&index, y, buff, buff_size)) return not_a_digit;
-            if ((abs(x) >= get_size_x() / 2 && x > 0) || (abs(y) >= get_size_y() / 2 && y > 0)) return wrong_coordinate;
-            if ((abs(x) > size_x / 2 && x < 0) || (abs(y) > get_size_y() / 2 && y < 0)) return wrong_coordinate;
+            if ((abs(x) > get_size_x() / 2 && x > 0) || (abs(y) > get_size_y() / 2 && y > 0)) 
+                return wrong_coordinate;
+            if ((abs(x) > size_x / 2 && x < 0) || (abs(y) > get_size_y() / 2 && y < 0)) 
+                return wrong_coordinate;
             this->matrix[get_size_x() / 2 + x][this->get_size_y() / 2 - y] = alive;
             index += 1;
         }

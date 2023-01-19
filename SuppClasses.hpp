@@ -29,7 +29,7 @@ namespace SuppClasses{
         char* buff = nullptr;
         int size_x;
         int size_y;
-        int current_index;
+        int current_index = 0;
 
         void fill_buffer();
         int read_name_and_size(int& index);

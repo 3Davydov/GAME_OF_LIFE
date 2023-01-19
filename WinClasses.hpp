@@ -26,8 +26,8 @@ namespace Classes{
         std::string cmd_input_file;
         std::string cmd_output_file;
         std::string cmd_iter_num;
-        int size_x;
-        int size_y;
+        int size_x = 0;
+        int size_y = 0;
     public:
 
         void set_window_descriptor(HWND new_descriptor);
