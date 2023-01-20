@@ -96,6 +96,15 @@ namespace Supportive{
                 MessageBox((*ptr_Field)->get_window_despriptor(), _T("WRONG INPUT FILE NAME!"), _T("ERROR"), MB_OK);
                 return;
             }
+            if (!is_exists((*ptr_Field)->get_cmd_output_file().c_str())){
+                MessageBox((*ptr_Field)->get_window_despriptor(), _T("WRONG OUTPUT FILE NAME!"), _T("ERROR"), MB_OK);
+                return;
+            }
+            int num = std::stoi((*ptr_Field)->get_cmd_iter_num());
+            if (num < 0){
+                MessageBox((*ptr_Field)->get_window_despriptor(), _T("WRONG ITERATIONS COUNT!"), _T("ERROR"), MB_OK);
+                return;
+            }
             (*file_reader).set_filename((*ptr_Field)->get_cmd_input_file());
         } 
         if ((*file_reader).get_filename() == nullptr){
