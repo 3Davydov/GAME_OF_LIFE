@@ -51,5 +51,7 @@ namespace Supportive{
 
     bool is_exists (char* name);
 
+    bool is_exists (const char* name);
+
 
 }

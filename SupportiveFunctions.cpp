@@ -79,10 +79,23 @@ namespace Supportive{
         (*ptr_window)->set_window_descriptor(window);
     }
 
+    bool is_exists (const char* name) {
+        if (FILE *file = fopen(name, "r")) {
+            fclose(file);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void choose_file_to_open(Classes::GamePlayWindow** ptr_Field, char** buff, OPENFILENAME* file, TCHAR* name, Classes::GameField* child, SuppClasses::FileReader* file_reader){
         (*ptr_Field)->set_game_field_pointer(child);
         if ((*ptr_Field)->get_filename() != nullptr) (*file_reader).set_filename((*ptr_Field)->get_filename());
         if ((*ptr_Field)->get_cmd_input_file() != ""){
+            if (!is_exists((*ptr_Field)->get_cmd_input_file().c_str())){
+                MessageBox((*ptr_Field)->get_window_despriptor(), _T("WRONG INPUT FILE NAME!"), _T("ERROR"), MB_OK);
+                return;
+            }
             (*file_reader).set_filename((*ptr_Field)->get_cmd_input_file());
         } 
         if ((*file_reader).get_filename() == nullptr){
