@@ -296,7 +296,7 @@ namespace Classes{
     }
 
     void GamePlayWindow::CreateAllButtons(HINSTANCE hInst, LPARAM lParam, HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,
-        HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button){
+        HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton){
         this->CreateButton(hInst, lParam, *DumpButton, this->get_window_despriptor(), BName, _T("DUMP"), choose_dump);
         this->CreateButton(hInst, lParam, *TickButton, this->get_window_despriptor(), BName, _T("TICK"), choose_tick);
         this->CreateButton(hInst, lParam, *ReturnButton, this->get_window_despriptor(), BName, _T("RETURN TO MENU"), choose__exit);
@@ -304,10 +304,13 @@ namespace Classes{
         this->CreateButton(hInst, lParam, *ExistButton, this->get_window_despriptor(), BName, _T("CHOOSE FILE FROM MENU"), exist_file);
         this->CreateButton(hInst, lParam, *NewButton, this->get_window_despriptor(), BName, _T("WHRITE FILE NAME"), new_file);
         this->CreateButton(hInst, lParam, *Return_To_Game_Button, this->get_window_despriptor(), BName, _T("RETURN TO GAME"), return_to_game);
+        this->CreateButton(hInst, lParam, *StartButton, this->get_window_despriptor(), BName, _T("START"), choose_start);
+        this->CreateButton(hInst, lParam, *StopButton, this->get_window_despriptor(), BName, _T("STOP"), choose_stop);
+
     }
 
     void GamePlayWindow::SetButtonsPosition(HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,
-        HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button){
+        HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton){
             this->move_window(*DumpButton, indent, indent, play_button_whidth, play_button_heigh, TRUE);
             this->move_window(*TickButton, indent, button_y_space, play_button_whidth, play_button_heigh, TRUE);
             this->move_window(*HelpButton, indent, button_y_space * 2 - indent, play_button_whidth, play_button_heigh, TRUE);
@@ -315,7 +318,9 @@ namespace Classes{
             this->move_window(*ExistButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 - offset_for_offline_button - indent*2), button_whidth, button_heigh, TRUE);
             this->move_window(*NewButton, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + offset_for_offline_button - indent), button_whidth, button_heigh, TRUE);
             this->move_window(*Return_To_Game_Button, (this->get_size_x()/2 - button_whidth/2), (this->get_size_y()/2 + button_y_space - indent*2), button_whidth, button_heigh, TRUE);
-            this->show_windows(SW_HIDE, *ExistButton, *NewButton, *Return_To_Game_Button);
+            this->move_window(*StartButton, 250, this->get_size_y() - 60, 220, 50, TRUE);
+            this->move_window(*StopButton, 250, this->get_size_y() - 60, 220, 50, TRUE);
+            this->show_windows(SW_HIDE, *ExistButton, *NewButton, *Return_To_Game_Button, *StopButton);
         }
 
     void GamePlayWindow::check_buff_reading(int result, GameField* child){

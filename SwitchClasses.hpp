@@ -92,56 +92,70 @@ namespace smart_switch{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) = 0;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) = 0;
     };
 
     class ChooseExit : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseTickClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseDumpClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseHelpClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseReturnToGameClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseExistFileClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     class ChooseNewFileClicked : public SwitchField{
         public:
             virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+    };
+
+    class StartClicked : public SwitchField{
+        public:
+            virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
+                            HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
+    };
+
+    class StopClicked : public SwitchField{
+        public:
+            virtual void execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
+                            HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader) override;
     };
 
     /*

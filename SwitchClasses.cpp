@@ -111,7 +111,7 @@ namespace smart_switch{
     */
     void ChooseExit::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         HWND hc = FindWindow(PName,  _T("PLAY"));
         ShowWindow(hc, SW_SHOW);
         (*ptr_Field)->get_game_field_pointer()->clear();
@@ -120,9 +120,20 @@ namespace smart_switch{
         (*ptr_Field)->destroy_window((*ptr_Field)->get_window_despriptor());
     }
 
+
+    DWORD __stdcall thread_start(LPVOID params)
+        {
+        Classes::GamePlayWindow** ptr_Field = (Classes::GamePlayWindow**) params;
+        while ((*ptr_Field)->get_play_mode_status() == 1){
+        Sleep(250);
+        SendMessage((*ptr_Field)->get_game_field_pointer()->get_window_despriptor(), change_matrix, (WPARAM) (*ptr_Field)->get_game_field_pointer(), NULL);
+        InvalidateRect((*ptr_Field)->get_window_despriptor(), NULL, TRUE);}
+        return 0;
+        };
+
     void ChooseTickClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         iteration++;
         SendMessage((*ptr_Field)->get_game_field_pointer()->get_window_despriptor(), change_matrix, (WPARAM) (*ptr_Field)->get_game_field_pointer(), NULL);
         InvalidateRect((*ptr_Field)->get_window_despriptor(), NULL, TRUE);
@@ -130,14 +141,14 @@ namespace smart_switch{
 
     void ChooseDumpClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         (*ptr_Field)->show_windows(SW_HIDE, *DumpButton, *TickButton, *ReturnButton, *HelpButton,  (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
         (*ptr_Field)->show_windows(SW_SHOW, *ExistButton, *NewButton);
     }
 
     void ChooseHelpClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         if (IsWindowVisible((*ptr_Field)->get_game_field_pointer()->get_window_despriptor())){
             (*ptr_Field)->show_windows(SW_HIDE, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
             (*ptr_Field)->show_windows(SW_SHOW, *Return_To_Game_Button);
@@ -147,7 +158,7 @@ namespace smart_switch{
 
     void ChooseReturnToGameClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         (*ptr_Field)->show_windows(SW_SHOW, *DumpButton, *TickButton, *ReturnButton, *HelpButton, (*ptr_Field)->get_game_field_pointer()->get_window_despriptor());
         (*ptr_Field)->show_windows(SW_HIDE, *Return_To_Game_Button);
         (*ptr_Field)->redraw_window((*ptr_Field)->get_window_despriptor(), TRUE);
@@ -155,7 +166,7 @@ namespace smart_switch{
 
     void ChooseExistFileClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         GetOpenFileName(file);
         std::ofstream out;
         out.open(name);
@@ -167,12 +178,30 @@ namespace smart_switch{
 
     void ChooseNewFileClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
                             HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
-                            HWND* NewButton, HWND* Return_To_Game_Button, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
         (*ptr_Field)->show_windows(SW_HIDE, *ExistButton, *NewButton);
         *text = new char[text_size];
         for (int i = 0; i < text_size; i++) (*text)[i] = NULL;
         flag = flag_activated;
         SendMessage((*ptr_Field)->get_window_despriptor(), WM_CHAR, VK_BACK, NULL);
+    }
+
+    void StartClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
+                            HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+        DWORD         dwThreadId;
+        (*ptr_Field)->set_play_mode_status(1);
+        (*ptr_Field)->show_windows(SW_HIDE, *StartButton);
+        (*ptr_Field)->show_windows(SW_SHOW, *StopButton);
+        HANDLE hr = CreateThread(NULL,0,thread_start,ptr_Field,0,&dwThreadId);
+    }
+
+    void StopClicked::execute_action(LPARAM lParam, Classes::GamePlayWindow** ptr_Field, int& iteration, char** text, int& flag, 
+                            HWND* DumpButton, HWND* TickButton, HWND* ReturnButton,HWND* HelpButton, HWND* ExistButton, 
+                            HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton, OPENFILENAME* file, TCHAR* name, SuppClasses::FileReader* file_reader){
+        (*ptr_Field)->set_play_mode_status(0);
+        (*ptr_Field)->show_windows(SW_SHOW, *StartButton);
+        (*ptr_Field)->show_windows(SW_HIDE, *StopButton);
     }
 
     Factory_Field get_possible_options_for_field(){
@@ -184,6 +213,8 @@ namespace smart_switch{
         factory.add <ChooseReturnToGameClicked>(return_to_game);
         factory.add <ChooseExistFileClicked>(exist_file);
         factory.add <ChooseNewFileClicked>(new_file);
+        factory.add <StartClicked>(choose_start);
+        factory.add <StopClicked>(choose_stop);
         return factory;
     }
     

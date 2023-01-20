@@ -130,6 +130,7 @@ namespace Classes{
 
     class GamePlayWindow : public AbstractWindow{
     private:
+        int play_mode_activated = 0;
         GameField* game_field = nullptr;
         char* file_name = nullptr;
     public:
@@ -139,11 +140,19 @@ namespace Classes{
             delete [] file_name;
         }
         
+        void set_play_mode_status(int new_status){
+            this->play_mode_activated = new_status;
+        }
+
+        const int get_play_mode_status(){
+            return this->play_mode_activated;
+        }
+
         void init_window(TCHAR* win_name, WNDPROC win_proc);
         
-        void CreateAllButtons(HINSTANCE hInst, LPARAM lParam, HWND* DumpButton, HWND* TickButton, HWND* ReturnButton, HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button);
+        void CreateAllButtons(HINSTANCE hInst, LPARAM lParam, HWND* DumpButton, HWND* TickButton, HWND* ReturnButton, HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton);
 
-        void SetButtonsPosition(HWND* DumpButton, HWND* TickButton, HWND* ReturnButton, HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button);
+        void SetButtonsPosition(HWND* DumpButton, HWND* TickButton, HWND* ReturnButton, HWND* HelpButton, HWND* ExistButton, HWND* NewButton, HWND* Return_To_Game_Button, HWND* StartButton, HWND* StopButton);
 
         void check_buff_reading(int result, GameField* child);
 

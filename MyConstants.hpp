@@ -76,6 +76,8 @@ namespace game_of_life_constants{
     const int choose_tick = 1011;
     const int choose__exit = 1012;
     const int choose_help = 1013;
+    const int choose_start = 2010;
+    const int choose_stop = 2011;
     const int exist_file = 1015;
     const int new_file = 1016;
     const int return_to_game = 1020;

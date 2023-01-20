@@ -97,7 +97,7 @@ namespace Processes{
     LRESULT CALLBACK WndProc_3(HWND hWnd_3, UINT message, WPARAM wParam, LPARAM lParam){
         static int iteration = NULL;
         static HINSTANCE hInst;
-        static HWND DumpButton, TickButton, ReturnButton, HelpButton, ExistButton, NewButton, Return_To_Game_Button;
+        static HWND DumpButton, TickButton, ReturnButton, HelpButton, ExistButton, NewButton, Return_To_Game_Button, StartButton, StopButton;
         static GameField child;
         static GamePlayWindow* ptr_Field;
         static OPENFILENAME file;
@@ -120,7 +120,7 @@ namespace Processes{
                 Supportive::choose_file_to_open(&ptr_Field, &buff, &file, name, &child, file_reader);
 
                 GameField* ptr_child = &child;
-                ptr_Field->CreateAllButtons(hInst, lParam, &DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
+                ptr_Field->CreateAllButtons(hInst, lParam, &DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &StartButton, &StopButton);
                 HWND descr;
                 if (file_reader->get_buff_size() != empty_buff){
                     descr = child.create_window(_T("ChildFrame"), _T("Child"), WS_CHILD | WS_BORDER, NULL, NULL, win_whidth, win_height, hWnd_3, hInst, ptr_child);
@@ -140,7 +140,7 @@ namespace Processes{
                 {
                 ptr_Field->set_size_x(LOWORD(lParam));
                 ptr_Field->set_size_y(HIWORD(lParam));
-                ptr_Field->SetButtonsPosition(&DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button);
+                ptr_Field->SetButtonsPosition(&DumpButton, &TickButton, &ReturnButton, &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &StartButton, &StopButton);
                 ptr_Field->set_game_field_pointer(&child);
 
                 int res = NULL;
@@ -168,7 +168,7 @@ namespace Processes{
                 smart_switch::Factory_Field factory = smart_switch::get_possible_options_for_field();
                 smart_switch::SwitchField* option = factory.create_option(l);
                 option->execute_action(l, &ptr_Field, iteration, &text, flag, &DumpButton, &TickButton, &ReturnButton, 
-                                 &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &file, name, file_reader);
+                                 &HelpButton, &ExistButton, &NewButton, &Return_To_Game_Button, &StartButton, &StopButton, &file, name, file_reader);
                 break;
                 }
             case WM_CHAR:
