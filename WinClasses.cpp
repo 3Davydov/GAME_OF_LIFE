@@ -301,8 +301,8 @@ namespace Classes{
         this->CreateButton(hInst, lParam, *TickButton, this->get_window_despriptor(), BName, _T("TICK"), choose_tick);
         this->CreateButton(hInst, lParam, *ReturnButton, this->get_window_despriptor(), BName, _T("RETURN TO MENU"), choose__exit);
         this->CreateButton(hInst, lParam, *HelpButton, this->get_window_despriptor(), BName, _T("HELP"), choose_help);
-        this->CreateButton(hInst, lParam, *ExistButton, this->get_window_despriptor(), BName, _T("SAVE TO EXIST FILE"), exist_file);
-        this->CreateButton(hInst, lParam, *NewButton, this->get_window_despriptor(), BName, _T("SAVE TO NEW FILE"), new_file);
+        this->CreateButton(hInst, lParam, *ExistButton, this->get_window_despriptor(), BName, _T("CHOOSE FILE FROM MENU"), exist_file);
+        this->CreateButton(hInst, lParam, *NewButton, this->get_window_despriptor(), BName, _T("WHRITE FILE NAME"), new_file);
         this->CreateButton(hInst, lParam, *Return_To_Game_Button, this->get_window_despriptor(), BName, _T("RETURN TO GAME"), return_to_game);
     }
 
